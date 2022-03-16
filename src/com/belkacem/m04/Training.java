@@ -18,6 +18,7 @@ public class Training {
 	 * 
 	 */
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
+	private static Scanner scanner = new Scanner(System.in);
 
 	/** I/O Streams */
 
@@ -28,7 +29,9 @@ public class Training {
 		System.out.println("                     Hello and welcome to my FullTrainings app");
 		System.out.println("          We will offer you a list of training courses currently available");
 		System.out.print(ConsoleColors.RESET);
-		displayAllTrainingList(trainings);
+		displayAllTrainingList();
+		storeMenu();
+		scanner.close();
 	}
 
 	/**
@@ -49,10 +52,8 @@ public class Training {
 	}
 
 	/**
-	 * 
-	 * @param training
 	 */
-	public static void displayAllTrainingList(Map<Integer, List<String>> training) {
+	public static void displayAllTrainingList() {
 		/*
 		 * Define the table header elements (box sizes, box titles)
 		 */
@@ -82,7 +83,7 @@ public class Training {
 		 * Display the table body
 		 */
 		// Browse the training HashMap
-		for (Entry<Integer, List<String>> map : training.entrySet()) {
+		for (Entry<Integer, List<String>> map : trainings.entrySet()) {
 			System.out.print("|");
 			// Browse HashMap Value
 			for (int i = 0; i < map.getValue().size(); i++) {
@@ -103,7 +104,7 @@ public class Training {
 	 * 
 	 * @param researchePlanes
 	 */
-	public static void displayAllTrainingList2(Map<Integer, List<String>> trainings) {
+	public static void displayAllTrainingList2() {
 		for (int i = 0; i < 83; i++)
 			System.out.print("-");
 		System.out.println();
@@ -128,5 +129,46 @@ public class Training {
 		}
 
 	}
+	
+	/**
+	 * 
+	 */
+	private static void storeMenu() {
+		int menuChoice = 0;
+		while (menuChoice != 4) {
+			System.out.print(ConsoleColors.BLACK_BOLD);
+			System.out.println("--------------------- STORE MENU --------------------");
+			System.out.print(ConsoleColors.RESET);
+			System.out.println("To view all the available trainings,        enter (1)");
+			System.out.println("To add training to bucket,                  enter (2)");
+			System.out.println("To show bucket,                             enter (3)");
+			System.out.println("To exit,                                    enter (4)");
+			System.out.println("-----------------------------------------------------");
+
+			menuChoice = scanner.nextInt();
+			switch (menuChoice) {
+			case 1:
+				displayAllTrainingList2();
+				break;
+			case 2:
+				addTrainingToBucket();
+				break;
+			case 3:
+				break;
+			case 4:
+				menuChoice = 4;
+				break;
+			default:
+				System.out.println("Wrong entry, make a right choice!");;
+			}
+
+		}
+	}
+
+	private static void addTrainingToBucket() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
