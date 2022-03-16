@@ -18,53 +18,17 @@ public class Training {
 	 * 
 	 */
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
+
 	/** I/O Streams */
-	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		insertDataInTrainingMap();
 		/** Welcome store app message */
 		System.out.print(ConsoleColors.BLACK_BOLD);
-		System.out.println("                                Hello and welcome to my FullTrainings app");
-		System.out.println("                     We will offer you a list of training courses currently available");
+		System.out.println("                     Hello and welcome to my FullTrainings app");
+		System.out.println("          We will offer you a list of training courses currently available");
 		System.out.print(ConsoleColors.RESET);
 		displayAllTrainingList(trainings);
-		storeMenu();
-		scanner.close();
-	}
-
-	private static void storeMenu() {
-		int menuChoice = 0;
-		while (menuChoice != 6) {
-			System.out.print(ConsoleColors.BLACK_BOLD);
-			System.out.println("------------------- STORE MENU -------------------");
-			System.out.print(ConsoleColors.RESET);
-			System.out.println("View all trainings,        enter (1)");
-			System.out.println("Add training to bucket,          enter (2)");
-			System.out.println("To add airplane parts,           enter (3)");
-			System.out.println("To remove an plane aiplane part, enter (4)");
-			System.out.println("To ,                             enter (5)");
-			System.out.println("To exit,                         enter (6)");
-			System.out.println("------------------------------------------");
-
-			while (!scanner.hasNextInt())
-				scanner.next();
-			menuChoice = scanner.nextInt();
-			switch (menuChoice) {
-			case 1:
-				displayAllTrainingList(trainings);
-				break;
-			case 6:
-
-				menuChoice = 6;
-
-				break;
-
-			default:
-				break;
-			}
-
-		}
 	}
 
 	/**
@@ -93,10 +57,9 @@ public class Training {
 		 * Define the table header elements (box sizes, box titles)
 		 */
 		// 1- Boxes sizes
-		String courseHeader = new String("COURSE                  ");
-		String daysNumberHeader = new String("DAYS/NB                 ");
-		String desciptionHeader = new String(
-				"DESCRIPTION                                                             ");
+		String courseHeader = new String("COURSE             ");
+		String daysNumberHeader = new String("DAYS/NB  ");
+		String desciptionHeader = new String("DESCRIPTION                               ");
 		String priceHeader = new String("PRICE (€) ");
 		int[] headerColumnsSize = { courseHeader.length(), daysNumberHeader.length(), desciptionHeader.length(),
 				priceHeader.length() };
@@ -104,15 +67,15 @@ public class Training {
 		// Dipslay the table header
 		int headerLength = courseHeader.length() + daysNumberHeader.length() + desciptionHeader.length()
 				+ priceHeader.length() + 5; // 5 is the number of the table columns + 1
+		System.out.print(ConsoleColors.RED_BOLD);
 		for (int i = 0; i < headerLength; i++)
 			System.out.print("-");
-		System.out.print(ConsoleColors.GREEN_BOLD);
 		System.out.println();
 		System.out.println(
 				"|" + courseHeader + "|" + daysNumberHeader + "|" + desciptionHeader + "|" + priceHeader + "|");
-		System.out.print(ConsoleColors.RESET);
 		for (int i = 0; i < headerLength; i++)
 			System.out.print("-");
+		System.out.print(ConsoleColors.RESET);//
 		System.out.println();
 
 		/*
@@ -141,26 +104,25 @@ public class Training {
 	 * @param researchePlanes
 	 */
 	public static void displayAllTrainingList2(Map<Integer, List<String>> trainings) {
-		for (int i = 0; i < 133; i++)
+		for (int i = 0; i < 83; i++)
 			System.out.print("-");
 		System.out.println();
-		System.out.print(ConsoleColors.BLACK_BOLD);
-		System.out.print(String.format("|%-24s|", "COURSE"));
-		System.out.print(String.format("%-24s|", "DAYS/NB"));
-		System.out.print(String.format("%-71s|", "DESCRIPTION"));
+		System.out.print(ConsoleColors.RED_BOLD);
+		System.out.print(String.format("|%-18s|", "COURSE"));
+		System.out.print(String.format("%-10s|", "DAYS/NB"));
+		System.out.print(String.format("%-41s|", "DESCRIPTION"));
 		System.out.print(String.format("%-10s|", "PRICE (€)"));
-		System.out.println(ConsoleColors.RESET);
 		System.out.println();
-		for (int i = 0; i < 133; i++)
+		for (int i = 0; i < 83; i++)
 			System.out.print("-");
+		System.out.println(ConsoleColors.RESET);
 		for (Map.Entry<Integer, List<String>> entry : trainings.entrySet()) {
-			System.out.println();
-			System.out.print(String.format("|%-24s|", entry.getValue().get(0)));
-			System.out.print(String.format("%-24s|", entry.getValue().get(1)));
-			System.out.print(String.format("%-71s|", entry.getValue().get(2)));
+			System.out.print(String.format("|%-18s|", entry.getValue().get(0)));
+			System.out.print(String.format("%-10s|", entry.getValue().get(1)));
+			System.out.print(String.format("%-41s|", entry.getValue().get(2)));
 			System.out.print(String.format("%-10s|", entry.getValue().get(3)));
 			System.out.println();
-			for (int i = 0; i < 133; i++)
+			for (int i = 0; i < 83; i++)
 				System.out.print("-");
 			System.out.println();
 		}
