@@ -178,7 +178,12 @@ public class Training {
 		int choice = scanner.nextInt();
 		System.out.println("choose the quantity for this training: ? 1,2,3,..");
 		quantity += scanner.nextInt();
-		bucket.put(trainings.get(choice), quantity);
+		if (bucket.containsKey(trainings.get(choice))) {
+			bucket.put(trainings.get(choice), quantity+bucket.get(trainings.get(choice)));
+		}
+		else {
+			bucket.put(trainings.get(choice), quantity);
+		}
 		System.out.println(ConsoleColors.BLUE_BOLD);
 		showBucket(bucket);
 		System.out.println(ConsoleColors.RESET);
