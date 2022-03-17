@@ -174,7 +174,7 @@ public class Training {
 				menuChoice = 0;
 				break;
 			default:
-				System.out.println("Wrong entry: ONLY INTEGERS ENTRIES ( 0 to 5");
+				System.out.println("Wrong entry: ONLY INTEGERS ENTRIES ( 0 to 5)");
 			}
 
 		}
