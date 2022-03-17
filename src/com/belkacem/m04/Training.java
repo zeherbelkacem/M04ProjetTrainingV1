@@ -1,10 +1,12 @@
 package com.belkacem.m04;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 /**
  * 
@@ -13,10 +15,12 @@ import java.util.Map.Entry;
  */
 
 public class Training {
-	/**
-	 * 
-	 */
+	/**	 **/
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
+	/**	 **/
+	private static Map<List<String>, Integer> bucket = new HashMap<List<String>, Integer>();
+	/**  */
+	private static Scanner scanner = new Scanner(System.in);
 
 	/** I/O Streams */
 
@@ -27,7 +31,9 @@ public class Training {
 		System.out.println("                     Hello and welcome to my FullTrainings app");
 		System.out.println("          We will offer you a list of training courses currently available");
 		System.out.print(ConsoleColors.RESET);
-		displayAllTrainingList(trainings);
+		displayAllTrainingList();
+		storeMenu();
+		scanner.close();
 	}
 
 	/**
@@ -48,10 +54,8 @@ public class Training {
 	}
 
 	/**
-	 * 
-	 * @param training
 	 */
-	public static void displayAllTrainingList(Map<Integer, List<String>> training) {
+	public static void displayAllTrainingList() {
 		/*
 		 * Define the table header elements (box sizes, box titles)
 		 */
@@ -81,7 +85,7 @@ public class Training {
 		 * Display the table body
 		 */
 		// Browse the training HashMap
-		for (Entry<Integer, List<String>> map : training.entrySet()) {
+		for (Entry<Integer, List<String>> map : trainings.entrySet()) {
 			System.out.print("|");
 			// Browse HashMap Value
 			for (int i = 0; i < map.getValue().size(); i++) {
@@ -102,8 +106,8 @@ public class Training {
 	 * 
 	 * @param researchePlanes
 	 */
-	public static void displayAllTrainingList2(Map<Integer, List<String>> trainings) {
-		for (int i = 0; i < 83; i++)
+	public static void displayAllTrainingListV2() {
+		for (int i = 0; i < 120; i++)
 			System.out.print("-");
 		System.out.println();
 		System.out.print(ConsoleColors.RED_BOLD);
@@ -111,8 +115,9 @@ public class Training {
 		System.out.print(String.format("%-10s|", "DAYS/NB"));
 		System.out.print(String.format("%-41s|", "DESCRIPTION"));
 		System.out.print(String.format("%-10s|", "PRICE (€)"));
+		System.out.print(String.format("%-35s|", "Buy traing?"));
 		System.out.println();
-		for (int i = 0; i < 83; i++)
+		for (int i = 0; i < 120; i++)
 			System.out.print("-");
 		System.out.println(ConsoleColors.RESET);
 		for (Map.Entry<Integer, List<String>> entry : trainings.entrySet()) {
@@ -120,12 +125,96 @@ public class Training {
 			System.out.print(String.format("%-10s|", entry.getValue().get(1)));
 			System.out.print(String.format("%-41s|", entry.getValue().get(2)));
 			System.out.print(String.format("%-10s|", entry.getValue().get(3)));
+			System.out.print(ConsoleColors.GREEN);
+			System.out.print(String.format("%-35s|", "To select this training, enter (" + entry.getKey() + ")"));
+			System.out.print(ConsoleColors.RESET);
 			System.out.println();
-			for (int i = 0; i < 83; i++)
+			for (int i = 0; i < 120; i++)
 				System.out.print("-");
 			System.out.println();
 		}
 
 	}
 
+	/**
+	 * 
+	 */
+	private static void storeMenu() {
+		int menuChoice = -1;
+		while (menuChoice != 0) {
+			System.out.print(ConsoleColors.BLACK_BOLD);
+			System.out.println("--------------------- STORE MENU --------------------");
+			System.out.print(ConsoleColors.RESET);
+			System.out.println("To view all the available trainings,        enter (1)");
+			System.out.println("To add training to bucket,                  enter (2)");
+			System.out.println("To show bucket,                             enter (3)");
+			System.out.println("To remove product from bucket,              enter (4)");
+			System.out.println("To exit,                                    enter (0)");
+			System.out.println("-----------------------------------------------------");
+
+			menuChoice = scanner.nextInt();
+			switch (menuChoice) {
+			case 1:
+				displayAllTrainingList();
+				break;
+			case 2:
+				addTrainingToBucket();
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 0:
+				menuChoice = 0;
+				break;
+			default:
+				System.out.println("Wrong entry, make a right choice!");
+				;
+			}
+
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private static void addTrainingToBucket() {
+		int quantity = 0;
+		List<String> bucketList = new ArrayList<String>();
+		displayAllTrainingListV2();
+		System.out.println("Enter the  training's number please!");
+		Integer choice = scanner.nextInt();
+		System.out.println("choose the quantity for this training: ? 1,2,3,..");
+		quantity += scanner.nextInt();
+		bucketList.add(choice.toString());
+		bucketList.addAll(trainings.get(choice));
+		System.out.println(bucketList);
+		if (bucket.containsKey(bucketList)) {
+			bucket.put(bucketList, quantity+bucket.get(bucketList));
+		}
+		else {
+			bucket.put(bucketList, quantity);
+		}
+		
+		showBucket(bucket, choice);
+		
+	}
+
+	/**
+	 * 
+	 * @param bucket2
+	 */
+	private static void showBucket(Map<List<String>, Integer> bucket2, int choice) {
+		
+		for (Entry<List<String>, Integer> entry : bucket2.entrySet()) {
+			System.out.print(ConsoleColors.BLUE_BOLD);
+			System.out.print("Product N°: "+entry.getKey().get(0)+" -> ");
+			System.out.print(ConsoleColors.RESET);
+			System.out.print(ConsoleColors.GREEN);
+			System.out.print(String.format("[%-60s]", entry.getKey().get(1)+", "+entry.getKey().get(2)+", "+entry.getKey().get(3)+", "+entry.getKey().get(4)));
+			System.out.print(String.format("[%-15s]", " Qunatity -> (" + entry.getValue() + ")"));
+			System.out.println(ConsoleColors.RESET);
+			
+		}
+	}
 }
