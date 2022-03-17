@@ -185,11 +185,34 @@ public class Training {
 	 */
 
 	private static void removeTrainingFromBucket() {
+		Integer productId = 0;
+		Integer quantity = 0;
 		showBucket(bucket);
 		System.out.println("Select the product number you want to remove !");
-		Integer productId = scanner.nextInt();
+		/** Check if choice entry is correct (integer) */
+		while (!scanner.hasNextInt()) {
+			scanner.next();
+			System.out.println("Wrong entry, enter only integers:");
+		}
+		productId = scanner.nextInt();
+		/** Check if product entry is correct (available) */
+		while (!bucket.containsKey(productId) && !scanner.hasNextInt()) {
+			System.out.println("Sorry the selected product not available, select the right number:");
+			scanner.next();
+		}
+		productId = scanner.nextInt();
 		System.out.println("Select the quantity of this product you want to remove !");
-		Integer quantity = scanner.nextInt();
+		/** Check if choice entry is correct (integer) */
+		while (!scanner.hasNextInt()) {
+			scanner.next();
+			System.out.println("Wrong entry, enter only integers:");
+		}
+		quantity = scanner.nextInt();
+		/** Check if quantity entry is less than or equal to the correct quantity (available) */
+		while (quantity > Integer.parseInt(bucket.get(productId).get(4)) || quantity <1) {
+			System.out.println("Sorry the entry quantity is bigger than the available quantity:");
+			quantity = scanner.nextInt();
+		}
 		// remove
 
 		if (quantity.toString().equals(bucket.get(productId).get(4))) {
@@ -208,13 +231,29 @@ public class Training {
 	 */
 	private static void addTrainingToBucket() {
 		Integer quantity = 0;
+		Integer choice = 0;
 		List<String> bucketList = new ArrayList<String>();
 		displayAllTrainingListV2();
-		System.out.println("Enter the  training's number please!");
-		Integer choice = scanner.nextInt();
+		
+		while (!trainings.containsKey(choice)) {
+			System.out.println("Enter the  training's number please (intger and!");
+			while (!scanner.hasNextInt()) {
+				scanner.next();
+				System.out.println("Wrong entry, enter only integers:");
+			}
+			choice = scanner.nextInt();
+		}
+		
+		
+		/** Check if choice entry is correct (available) */
+		/***/
 		System.out.println("choose the quantity for this training: ? 1,2,3,..");
-
+		while (!scanner.hasNextInt()) {
+			scanner.next();
+			System.out.println("Wrong entry, enter only integers:");
+		}
 		quantity = scanner.nextInt();
+
 		// build list for map
 		bucketList.addAll(trainings.get(choice));// copy the training list to bucket list (train
 		if (bucket.containsKey(choice)) {// add the same product -> quantity incremented
