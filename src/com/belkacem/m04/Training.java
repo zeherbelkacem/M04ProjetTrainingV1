@@ -3,6 +3,7 @@ package com.belkacem.m04;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,10 +16,11 @@ import java.util.Scanner;
  */
 
 public class Training {
-	/**	Training data structure **/
+
+	/** Training data structure **/
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
-	/**	Bucket data structure **/
-	private static Map<List<String>, Integer> bucket = new HashMap<List<String>, Integer>();
+	/** Bucket data structure **/
+	private static Map<Integer, List<String>> bucket = new HashMap<Integer, List<String>>();
 	/** I/O Streams */
 	private static Scanner scanner = new Scanner(System.in);
 
@@ -161,6 +163,8 @@ public class Training {
 			case 3:
 				break;
 			case 4:
+
+				removeTrainingFromBucket();
 				break;
 			case 0:
 				menuChoice = 0;
@@ -176,43 +180,69 @@ public class Training {
 	/**
 	 * 
 	 */
+	
+	private static void removeTrainingFromBucket() {
+		showBucket(bucket);
+		System.out.println("Select the product number you want to remove !");
+		Integer productId = scanner.nextInt();
+		System.out.println("Select the quantity of this product you want to remove !");
+		Integer quantity = scanner.nextInt();
+		// remove
+		
+		if (quantity.toString().equals(bucket.get(productId).get(4))) {
+			bucket.remove(productId);
+			showBucket(bucket);
+		} else {
+			Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4))-quantity;
+			bucket.get(productId).remove(4);
+			bucket.get(productId).add(newQuantity.toString());
+		}
+		showBucket(bucket);
+	}
+
+	/**
+	 * 
+	 */
 	private static void addTrainingToBucket() {
-		int quantity = 0;
+		Integer quantity = 0;
 		List<String> bucketList = new ArrayList<String>();
 		displayAllTrainingListV2();
 		System.out.println("Enter the  training's number please!");
 		Integer choice = scanner.nextInt();
 		System.out.println("choose the quantity for this training: ? 1,2,3,..");
-		quantity += scanner.nextInt();
-		bucketList.add(choice.toString());
-		bucketList.addAll(trainings.get(choice));
-		System.out.println(bucketList);
-		if (bucket.containsKey(bucketList)) {
-			bucket.put(bucketList, quantity+bucket.get(bucketList));
+
+		quantity = scanner.nextInt();
+		// build list for map
+		bucketList.addAll(trainings.get(choice));// copy the training list to bucket list (train
+		if (bucket.containsKey(choice)) {// add the same product -> quantity incremented
+			Integer newQuantity = quantity + Integer.parseInt(bucket.get(choice).get(4)); //
+			bucketList.add(newQuantity.toString());
+			bucket.put(choice, bucketList);
+		} else { // new product in the bucket (first time)
+			bucketList.add(quantity.toString());
+			bucket.put(choice, bucketList);
 		}
-		else {
-			bucket.put(bucketList, quantity);
-		}
-		
-		showBucket(bucket, choice);
-		
+		showBucket(bucket);
+
 	}
 
 	/**
 	 * 
 	 * @param bucket2
 	 */
-	private static void showBucket(Map<List<String>, Integer> bucket2, int choice) {
-		
-		for (Entry<List<String>, Integer> entry : bucket2.entrySet()) {
+
+	private static void showBucket(Map<Integer, List<String>> bucket2) {
+
+		for (Entry<Integer, List<String>> entry : bucket2.entrySet()) {
 			System.out.print(ConsoleColors.BLUE_BOLD);
-			System.out.print("Product N°: "+entry.getKey().get(0)+" -> ");
+			System.out.print("Product N°: " + entry.getKey() + " -> ");
 			System.out.print(ConsoleColors.RESET);
 			System.out.print(ConsoleColors.GREEN);
-			System.out.print(String.format("[%-60s]", entry.getKey().get(1)+", "+entry.getKey().get(2)+", "+entry.getKey().get(3)+", "+entry.getKey().get(4)));
-			System.out.print(String.format("[%-15s]", " Qunatity -> (" + entry.getValue() + ")"));
+			System.out.print(String.format("[%-60s]", entry.getValue().get(0) + ", " + entry.getValue().get(1) + ", "
+					+ entry.getValue().get(2) + ", " + entry.getValue().get(3)));
+			System.out.print(String.format("[%-15s]", " Qunatity -> (" + entry.getValue().get(4) + ")"));
 			System.out.println(ConsoleColors.RESET);
-			
+
 		}
 	}
 }
