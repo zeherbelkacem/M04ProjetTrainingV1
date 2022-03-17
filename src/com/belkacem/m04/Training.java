@@ -1,11 +1,12 @@
 package com.belkacem.m04;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 /**
  * 
@@ -139,15 +140,16 @@ public class Training {
 	 * 
 	 */
 	private static void storeMenu() {
-		int menuChoice = 0;
-		while (menuChoice != 4) {
+		int menuChoice = -1;
+		while (menuChoice != 0) {
 			System.out.print(ConsoleColors.BLACK_BOLD);
 			System.out.println("--------------------- STORE MENU --------------------");
 			System.out.print(ConsoleColors.RESET);
 			System.out.println("To view all the available trainings,        enter (1)");
 			System.out.println("To add training to bucket,                  enter (2)");
 			System.out.println("To show bucket,                             enter (3)");
-			System.out.println("To exit,                                    enter (4)");
+			System.out.println("To remove product from bucket,              enter (4)");
+			System.out.println("To exit,                                    enter (0)");
 			System.out.println("-----------------------------------------------------");
 
 			menuChoice = scanner.nextInt();
@@ -161,7 +163,9 @@ public class Training {
 			case 3:
 				break;
 			case 4:
-				menuChoice = 4;
+				break;
+			case 0:
+				menuChoice = 0;
 				break;
 			default:
 				System.out.println("Wrong entry, make a right choice!");
@@ -171,35 +175,45 @@ public class Training {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private static void addTrainingToBucket() {
 		int quantity = 0;
+		List<String> bucketList = new ArrayList<String>();
 		displayAllTrainingListV2();
 		System.out.println("Enter the  training's number please!");
-		int choice = scanner.nextInt();
+		Integer choice = scanner.nextInt();
 		System.out.println("choose the quantity for this training: ? 1,2,3,..");
 		quantity += scanner.nextInt();
-		if (bucket.containsKey(trainings.get(choice))) {
-			bucket.put(trainings.get(choice), quantity+bucket.get(trainings.get(choice)));
+		bucketList.add(choice.toString());
+		bucketList.addAll(trainings.get(choice));
+		System.out.println(bucketList);
+		if (bucket.containsKey(bucketList)) {
+			bucket.put(bucketList, quantity+bucket.get(bucketList));
 		}
 		else {
-			bucket.put(trainings.get(choice), quantity);
+			bucket.put(bucketList, quantity);
 		}
-		System.out.println(ConsoleColors.BLUE_BOLD);
-		showBucket(bucket);
-		System.out.println(ConsoleColors.RESET);
+		
+		showBucket(bucket, choice);
+		
 	}
 
 	/**
 	 * 
 	 * @param bucket2
 	 */
-	private static void showBucket(Map<List<String>, Integer> bucket2) {
+	private static void showBucket(Map<List<String>, Integer> bucket2, int choice) {
 		
-
 		for (Entry<List<String>, Integer> entry : bucket2.entrySet()) {
-			System.out.print(String.format("[%-80s]", "Product ! -> "+entry.getKey().get(0)+", "+entry.getKey().get(1)+", "+entry.getKey().get(2)+", "+entry.getKey().get(3)));
+			System.out.print(ConsoleColors.BLUE_BOLD);
+			System.out.print("Product N°: "+entry.getKey().get(0)+" -> ");
+			System.out.print(ConsoleColors.RESET);
+			System.out.print(ConsoleColors.GREEN);
+			System.out.print(String.format("[%-60s]", entry.getKey().get(1)+", "+entry.getKey().get(2)+", "+entry.getKey().get(3)+", "+entry.getKey().get(4)));
 			System.out.print(String.format("[%-15s]", " Qunatity -> (" + entry.getValue() + ")"));
-			System.out.println();
+			System.out.println(ConsoleColors.RESET);
 			
 		}
 	}
