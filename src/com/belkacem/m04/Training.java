@@ -15,14 +15,12 @@ import java.util.Scanner;
  */
 
 public class Training {
-	/**	 **/
+	/**	Training data structure **/
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
-	/**	 **/
+	/**	Bucket data structure **/
 	private static Map<List<String>, Integer> bucket = new HashMap<List<String>, Integer>();
-	/**  */
-	private static Scanner scanner = new Scanner(System.in);
-
 	/** I/O Streams */
+	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		insertDataInTrainingMap();
