@@ -1,10 +1,13 @@
 package com.belkacem.m04;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 /**
  * 
@@ -13,12 +16,12 @@ import java.util.Map.Entry;
  */
 
 public class Training {
-	/**
-	 * 
-	 */
+	/** Training data structure **/
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
-
+	/** Bucket data structure **/
+	private static Map<Integer, List<String>> bucket = new HashMap<Integer, List<String>>();
 	/** I/O Streams */
+	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		insertDataInTrainingMap();
@@ -27,7 +30,9 @@ public class Training {
 		System.out.println("                     Hello and welcome to my FullTrainings app");
 		System.out.println("          We will offer you a list of training courses currently available");
 		System.out.print(ConsoleColors.RESET);
-		displayAllTrainingList(trainings);
+		displayAllTrainingList();
+		storeMenu();
+		scanner.close();
 	}
 
 	/**
@@ -48,10 +53,8 @@ public class Training {
 	}
 
 	/**
-	 * 
-	 * @param training
 	 */
-	public static void displayAllTrainingList(Map<Integer, List<String>> training) {
+	public static void displayAllTrainingList() {
 		/*
 		 * Define the table header elements (box sizes, box titles)
 		 */
@@ -81,7 +84,7 @@ public class Training {
 		 * Display the table body
 		 */
 		// Browse the training HashMap
-		for (Entry<Integer, List<String>> map : training.entrySet()) {
+		for (Entry<Integer, List<String>> map : trainings.entrySet()) {
 			System.out.print("|");
 			// Browse HashMap Value
 			for (int i = 0; i < map.getValue().size(); i++) {
@@ -102,8 +105,8 @@ public class Training {
 	 * 
 	 * @param researchePlanes
 	 */
-	public static void displayAllTrainingList2(Map<Integer, List<String>> trainings) {
-		for (int i = 0; i < 83; i++)
+	public static void displayAllTrainingListV2() {
+		for (int i = 0; i < 120; i++)
 			System.out.print("-");
 		System.out.println();
 		System.out.print(ConsoleColors.RED_BOLD);
@@ -111,8 +114,9 @@ public class Training {
 		System.out.print(String.format("%-10s|", "DAYS/NB"));
 		System.out.print(String.format("%-41s|", "DESCRIPTION"));
 		System.out.print(String.format("%-10s|", "PRICE (€)"));
+		System.out.print(String.format("%-35s|", "Buy traing?"));
 		System.out.println();
-		for (int i = 0; i < 83; i++)
+		for (int i = 0; i < 120; i++)
 			System.out.print("-");
 		System.out.println(ConsoleColors.RESET);
 		for (Map.Entry<Integer, List<String>> entry : trainings.entrySet()) {
@@ -120,12 +124,120 @@ public class Training {
 			System.out.print(String.format("%-10s|", entry.getValue().get(1)));
 			System.out.print(String.format("%-41s|", entry.getValue().get(2)));
 			System.out.print(String.format("%-10s|", entry.getValue().get(3)));
+			System.out.print(ConsoleColors.GREEN);
+			System.out.print(String.format("%-35s|", "To select this training, enter (" + entry.getKey() + ")"));
+			System.out.print(ConsoleColors.RESET);
 			System.out.println();
-			for (int i = 0; i < 83; i++)
+			for (int i = 0; i < 120; i++)
 				System.out.print("-");
 			System.out.println();
 		}
 
 	}
 
+	/**
+	 * 
+	 */
+	private static void storeMenu() {
+		int menuChoice = -1;
+		while (menuChoice != 0) {
+			System.out.print(ConsoleColors.BLACK_BOLD);
+			System.out.println("--------------------- STORE MENU --------------------");
+			System.out.print(ConsoleColors.RESET);
+			System.out.println("To view all the available trainings,        enter (1)");
+			System.out.println("To add training to bucket,                  enter (2)");
+			System.out.println("To show bucket,                             enter (3)");
+			System.out.println("To remove product from bucket,              enter (4)");
+			System.out.println("To exit,                                    enter (0)");
+			System.out.println("-----------------------------------------------------");
+
+			menuChoice = scanner.nextInt();
+			switch (menuChoice) {
+			case 1:
+				displayAllTrainingList();
+				break;
+			case 2:
+				addTrainingToBucket();
+				break;
+			case 3:
+				break;
+			case 4:
+				removeTrainingFromBucket();
+				break;
+			case 0:
+				menuChoice = 0;
+				break;
+			default:
+				System.out.println("Wrong entry, make a right choice!");
+				;
+			}
+
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private static void removeTrainingFromBucket() {
+		showBucket(bucket);
+		System.out.println("Select the product number you want to remove !");
+		Integer productId = scanner.nextInt();
+		System.out.println("Select the quantity of this product you want to remove !");
+		Integer quantity = scanner.nextInt();
+		// remove
+		
+		if (quantity.toString().equals(bucket.get(productId).get(4))) {
+			bucket.remove(productId);
+			showBucket(bucket);
+		} else {
+			Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4))-quantity;
+			bucket.get(productId).remove(4);
+			bucket.get(productId).add(newQuantity.toString());
+		}
+		showBucket(bucket);
+	}
+
+	/**
+	 * 
+	 */
+	private static void addTrainingToBucket() {
+		Integer quantity = 0;
+		List<String> bucketList = new ArrayList<String>();
+		displayAllTrainingListV2();
+		System.out.println("Enter the  training's number please!");
+		Integer choice = scanner.nextInt();
+		System.out.println("choose the quantity for this training: ? 1,2,3,..");
+		quantity = scanner.nextInt();
+		// build list for map
+		bucketList.addAll(trainings.get(choice));// copy the training list to bucket list (train
+		if (bucket.containsKey(choice)) {// add the same product -> quantity incremented
+			Integer newQuantity = quantity + Integer.parseInt(bucket.get(choice).get(4)); //
+			bucketList.add(newQuantity.toString());
+			bucket.put(choice, bucketList);
+		} else { // new product in the bucket (first time)
+			bucketList.add(quantity.toString());
+			bucket.put(choice, bucketList);
+		}
+		showBucket(bucket);
+
+	}
+
+	/**
+	 * 
+	 * @param bucket2
+	 */
+	private static void showBucket(Map<Integer, List<String>> bucket2) {
+
+		for (Entry<Integer, List<String>> entry : bucket2.entrySet()) {
+			System.out.print(ConsoleColors.BLUE_BOLD);
+			System.out.print("Product N°: " + entry.getKey() + " -> ");
+			System.out.print(ConsoleColors.RESET);
+			System.out.print(ConsoleColors.GREEN);
+			System.out.print(String.format("[%-60s]", entry.getValue().get(0) + ", " + entry.getValue().get(1) + ", "
+					+ entry.getValue().get(2) + ", " + entry.getValue().get(3)));
+			System.out.print(String.format("[%-15s]", " Qunatity -> (" + entry.getValue().get(4) + ")"));
+			System.out.println(ConsoleColors.RESET);
+
+		}
+	}
 }
