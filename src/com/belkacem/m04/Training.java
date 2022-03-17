@@ -151,7 +151,11 @@ public class Training {
 			System.out.println("To remove product from bucket,              enter (4)");
 			System.out.println("To exit,                                    enter (0)");
 			System.out.println("-----------------------------------------------------");
-
+			/** Only integer entries accepted */
+			while (!scanner.hasNextInt()) {
+				System.out.println("Wrong entry, make a right choice (ONLY INTEGERS ENTRIES)!");
+				scanner.next();
+			}
 			menuChoice = scanner.nextInt();
 			switch (menuChoice) {
 			case 1:
@@ -170,8 +174,7 @@ public class Training {
 				menuChoice = 0;
 				break;
 			default:
-				System.out.println("Wrong entry, make a right choice!");
-				;
+				System.out.println("Wrong entry: ONLY INTEGERS ENTRIES ( 0 to 5");
 			}
 
 		}
@@ -180,7 +183,7 @@ public class Training {
 	/**
 	 * 
 	 */
-	
+
 	private static void removeTrainingFromBucket() {
 		showBucket(bucket);
 		System.out.println("Select the product number you want to remove !");
@@ -188,12 +191,12 @@ public class Training {
 		System.out.println("Select the quantity of this product you want to remove !");
 		Integer quantity = scanner.nextInt();
 		// remove
-		
+
 		if (quantity.toString().equals(bucket.get(productId).get(4))) {
 			bucket.remove(productId);
 			showBucket(bucket);
 		} else {
-			Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4))-quantity;
+			Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4)) - quantity;
 			bucket.get(productId).remove(4);
 			bucket.get(productId).add(newQuantity.toString());
 		}
