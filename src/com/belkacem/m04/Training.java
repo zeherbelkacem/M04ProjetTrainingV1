@@ -185,42 +185,76 @@ public class Training {
 	 */
 
 	private static void removeTrainingFromBucket() {
-		Integer productId = 0;
-		Integer quantity = 0;
-		showBucket(bucket);
-		System.out.println("Select the product number you want to remove !");
-		/** Check if product entry is correct (available) */
-		while (!bucket.containsKey(productId)) {
-			System.out.println("Sorry the selected product not available, select the right number:");
-			/** Check if choice entry is correct (integer) */
-			while (!scanner.hasNextInt()) {
-				scanner.next();
-				System.out.println("Wrong entry, enter only integers:");
-			}
-			productId = scanner.nextInt();
-		}
-		
-		
-		/** Check if quantity entry is less than or equal to the correct quantity (available) */
-		while (quantity > Integer.parseInt(bucket.get(productId).get(4)) || quantity <1) {
-			System.out.println("Select the quantity of this product you want to remove !");
-			while (!scanner.hasNextInt()) {
-				scanner.next();
-				System.out.println("Wrong entry, enter only integers uentry out:");
-			}
-			quantity = scanner.nextInt();
-		}
-		// remove
+		if (bucket.isEmpty())
+			System.out.println("Sorry, your bucket is empty!!!");
+		else {
+			String answer = "yes";
+			while (!answer.equalsIgnoreCase("no")) {
+				Integer productId = 0;
+				Integer quantity = 0;
+				showBucket(bucket);
+				
+				/** Check if product entry is correct (available) */
+				while (!bucket.containsKey(productId)) {
+					System.out.println("Select the product number you want to remove. Entry must be integer and correct ID !");
+					while (!scanner.hasNextInt()) {
+						scanner.next();
+						System.out.println("Wrong entry, enter only integers:");
+					}
+					//System.out.println("Sorry the selected product not available, select the right number:");
+					/** Check if choice entry is correct (integer) */
+					productId = scanner.nextInt();
+				}
 
-		if (quantity.toString().equals(bucket.get(productId).get(4))) {
-			bucket.remove(productId);
-			showBucket(bucket);
-		} else {
-			Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4)) - quantity;
-			bucket.get(productId).remove(4);
-			bucket.get(productId).add(newQuantity.toString());
+				/**
+				 * Check if quantity entry is less than or equal to the correct quantity
+				 * (available)
+				 */
+				while (quantity > Integer.parseInt(bucket.get(productId).get(4)) || quantity < 1) {
+					System.out.println("Select the quantity of this product you want to remove !");
+					while (!scanner.hasNextInt()) {
+						scanner.next();
+						System.out.println("Wrong entry, enter only integers uentry out:");
+					}
+					quantity = scanner.nextInt();
+				}
+				// remove
+				if (!bucket.isEmpty()) {
+					if (quantity.toString().equals(bucket.get(productId).get(4))) {
+						bucket.remove(productId);
+						showBucket(bucket);
+					} else {
+						Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4)) - quantity;
+						bucket.get(productId).remove(4);
+						bucket.get(productId).add(newQuantity.toString());
+					}
+					if (bucket.isEmpty()) {
+						System.out.println("Your bucket is empty, good bye");
+						answer = "no";//get out
+					}else {
+						showBucket(bucket);
+						System.out.println("Do you want to remove another Product: ?(yes/no)");
+						answer = yesOrNoChoice();
+					}
+					
+				} 
+			}
+
 		}
-		showBucket(bucket);
+	}
+
+	/**
+	 * 
+	 * @param scan
+	 * @return
+	 */
+	private static String yesOrNoChoice() {
+		String choice = scanner.next();
+		while (!choice.equalsIgnoreCase("yes") && !choice.equalsIgnoreCase("no")) {
+			System.out.println("Sorry, answer yes or no : ?(yes/no)");
+			choice = scanner.next();
+		}
+		return choice;
 	}
 
 	/**
@@ -231,7 +265,7 @@ public class Training {
 		Integer choice = 0;
 		List<String> bucketList = new ArrayList<String>();
 		displayAllTrainingListV2();
-		
+
 		while (!trainings.containsKey(choice)) {
 			System.out.println("Enter the  training's number please (intger and!");
 			while (!scanner.hasNextInt()) {
@@ -240,7 +274,7 @@ public class Training {
 			}
 			choice = scanner.nextInt();
 		}
-		
+
 		/** Check if choice entry is correct (available) */
 		/***/
 		System.out.println("choose the quantity for this training: ? 1,2,3,..");
