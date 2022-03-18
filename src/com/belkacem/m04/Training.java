@@ -189,28 +189,25 @@ public class Training {
 		Integer quantity = 0;
 		showBucket(bucket);
 		System.out.println("Select the product number you want to remove !");
-		/** Check if choice entry is correct (integer) */
-		while (!scanner.hasNextInt()) {
-			scanner.next();
-			System.out.println("Wrong entry, enter only integers:");
-		}
-		productId = scanner.nextInt();
 		/** Check if product entry is correct (available) */
-		while (!bucket.containsKey(productId) && !scanner.hasNextInt()) {
+		while (!bucket.containsKey(productId)) {
 			System.out.println("Sorry the selected product not available, select the right number:");
-			scanner.next();
+			/** Check if choice entry is correct (integer) */
+			while (!scanner.hasNextInt()) {
+				scanner.next();
+				System.out.println("Wrong entry, enter only integers:");
+			}
+			productId = scanner.nextInt();
 		}
-		productId = scanner.nextInt();
-		System.out.println("Select the quantity of this product you want to remove !");
-		/** Check if choice entry is correct (integer) */
-		while (!scanner.hasNextInt()) {
-			scanner.next();
-			System.out.println("Wrong entry, enter only integers:");
-		}
-		quantity = scanner.nextInt();
+		
+		
 		/** Check if quantity entry is less than or equal to the correct quantity (available) */
 		while (quantity > Integer.parseInt(bucket.get(productId).get(4)) || quantity <1) {
-			System.out.println("Sorry the entry quantity is bigger than the available quantity:");
+			System.out.println("Select the quantity of this product you want to remove !");
+			while (!scanner.hasNextInt()) {
+				scanner.next();
+				System.out.println("Wrong entry, enter only integers uentry out:");
+			}
 			quantity = scanner.nextInt();
 		}
 		// remove
@@ -243,7 +240,6 @@ public class Training {
 			}
 			choice = scanner.nextInt();
 		}
-		
 		
 		/** Check if choice entry is correct (available) */
 		/***/
