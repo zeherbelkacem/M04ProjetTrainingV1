@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"com.belkacem.m04","l":"Training"}];updateSearchResults();

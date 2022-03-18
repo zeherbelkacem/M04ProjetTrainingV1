@@ -45,9 +45,9 @@ public class Training {
 		String[] training1Array = { "C++", "20", "C++/11: sysntax, oop, qt", "10" };
 		String[] training2Array = { "PHYTON", "10", "Fundamentals, poo...", "100" };
 		String[] training3Array = { "ANGURAL", "25", "Javascript, TypeScript", "250" };
-		futurTrainings.put(1, Arrays.asList(training1Array));
-		futurTrainings.put(2, Arrays.asList(training2Array));
-		futurTrainings.put(3, Arrays.asList(training3Array));
+		futurTrainings.put(-1, Arrays.asList(training1Array));
+		futurTrainings.put(-2, Arrays.asList(training2Array));
+		futurTrainings.put(-3, Arrays.asList(training3Array));
 	}
 
 	/**

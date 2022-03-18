@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.belkacem.m04","c":"Training","l":"displayAllTrainingList()"},{"p":"com.belkacem.m04","c":"Training","l":"displayAllTrainingListV2()"},{"p":"com.belkacem.m04","c":"Training","l":"main(String[])","u":"main(java.lang.String[])"},{"p":"com.belkacem.m04","c":"Training","l":"Training()","u":"%3Cinit%3E()"}];updateSearchResults();
