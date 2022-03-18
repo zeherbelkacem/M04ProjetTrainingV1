@@ -3,7 +3,6 @@ package com.belkacem.m04;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,6 +18,8 @@ public class Training {
 
 	/** Training data structure **/
 	private static Map<Integer, List<String>> trainings = new HashMap<Integer, List<String>>();
+	/** Training data structure (available soon) **/
+	private static Map<Integer, List<String>> futurTrainings = new HashMap<Integer, List<String>>();
 	/** Bucket data structure **/
 	private static Map<Integer, List<String>> bucket = new HashMap<Integer, List<String>>();
 	/** I/O Streams */
@@ -26,6 +27,7 @@ public class Training {
 
 	public static void main(String[] args) {
 		insertDataInTrainingMap();
+		insertDataInFuturTrainingMap();
 		/** Welcome store app message */
 		System.out.print(ConsoleColors.BLACK_BOLD);
 		System.out.println("                     Hello and welcome to my FullTrainings app");
@@ -34,6 +36,18 @@ public class Training {
 		displayAllTrainingList();
 		storeMenu();
 		scanner.close();
+	}
+
+	/**
+	 * 
+	 */
+	private static void insertDataInFuturTrainingMap() {
+		String[] training1Array = { "C++", "20", "C++/11: sysntax, oop, qt", "10" };
+		String[] training2Array = { "PHYTON", "10", "Fundamentals, poo...", "100" };
+		String[] training3Array = { "ANGURAL", "25", "Javascript, TypeScript", "250" };
+		futurTrainings.put(1, Arrays.asList(training1Array));
+		futurTrainings.put(2, Arrays.asList(training2Array));
+		futurTrainings.put(3, Arrays.asList(training3Array));
 	}
 
 	/**
@@ -170,6 +184,33 @@ public class Training {
 				System.out.print("-");// Draw next line
 			System.out.println();
 		}
+
+		/**
+		 * training available soon
+		 */
+		System.out.print(ConsoleColors.CYAN_BOLD);
+		System.out.print("|");
+		System.out.println("                               Training available soon                             |");
+		for (int i = 0; i < headerLength; i++)
+			System.out.print("-");
+		System.out.println(ConsoleColors.RESET);
+		System.out.print(ConsoleColors.CYAN);
+		for (Entry<Integer, List<String>> map : futurTrainings.entrySet()) {
+			System.out.print("|");
+			// Browse HashMap Value
+			for (int i = 0; i < map.getValue().size(); i++) {
+				System.out.print(map.getValue().get(i));
+				for (int j = 0; j < headerColumnsSize[i] - map.getValue().get(i).length(); j++)
+					System.out.print(" "); // fill column ????
+				System.out.print("|"); // Draw next column border
+			}
+
+			System.out.println();
+			for (int i = 0; i < headerLength; i++)
+				System.out.print("-");// Draw next line
+			System.out.println();
+		}
+		System.out.println(ConsoleColors.RESET);
 	}
 
 	/**
