@@ -58,7 +58,7 @@ public class Training {
 	 * by different training descriptions. End by filling a HashMap representing our
 	 * training data structure (id is added)
 	 */
-	private static void insertDataInFutureTrainingMap() {
+	public static void insertDataInFutureTrainingMap() {
 		String[][] trainingArray = { { "C++", "20", "C++/11: sysntax, oop, qt", "120" },
 				{ "PHYTON", "10", "Fundamentals, poo...", "100" },
 				{ "ANGURAL", "25", "Javascript, TypeScript", "250" } };
@@ -71,7 +71,7 @@ public class Training {
 	 * an array by different training descriptions. End by filling a HashMap
 	 * representing our training data structure (id is added)
 	 */
-	private static void insertDataInTrainingMap() {
+	public static void insertDataInTrainingMap() {
 		String[][] trainingArray = { { "JAVA", "20", "Java SE 8: sysntax, oop", "100" },
 				{ "ADVANCED JAVA", "20", "Exceptions, files, thread, jcdb...", "100" },
 				{ "C#", "15", "DotNet Core", "200" }, { "SPRING", "15", "Spring core/mvc/security", "300" },
@@ -85,7 +85,7 @@ public class Training {
 	 * validating and empty the bucket, canceling the bucket or coming back later
 	 * 
 	 */
-	private static void bucketSummary() {
+	public static void bucketSummary() {
 
 		System.out.print(ConsoleColors.RED_BOLD
 				+ "    |---------------------------------------  Your bucket summary  -----------------------------------------|");
@@ -146,7 +146,7 @@ public class Training {
 				answer = scanner.nextInt();
 			}
 			if (answer == 1 || answer == 2) {
-				/*Empty the entire bucket*/
+				/* Empty the entire bucket */
 				bucket.clear();
 				System.out.println("Your bucket is cleared, thank you.");
 			}
@@ -263,7 +263,7 @@ public class Training {
 	 * This method allows us to have a simple menu offering a range of actions to
 	 * perform like: display training, add, delete, validate...
 	 */
-	private static void storeMenu() {
+	public static void storeMenu() {
 		int menuChoice = -1;
 		while (menuChoice != 0) { // (0) to exit menu
 			System.out.println(ConsoleColors.BLACK_BOLD + "--------------------- STORE MENU --------------------"
@@ -307,7 +307,7 @@ public class Training {
 	 * This method allows user to remove the entire selected bucket line order or
 	 * partially the quantity of the select bucket line order
 	 */
-	private static void removeTrainingFromBucket() {
+	public static void removeTrainingFromBucket() {
 		if (bucket.isEmpty())
 			System.out.println("Sorry, your bucket is empty!!!");
 		else {
@@ -373,7 +373,7 @@ public class Training {
 	 * 
 	 * @return a String "yes" or "no"
 	 */
-	private static String yesOrNoChoice() {
+	public static String yesOrNoChoice() {
 		String choice = scanner.next();
 		while (!choice.equalsIgnoreCase("yes") && !choice.equalsIgnoreCase("no")) {
 			System.out.println("Sorry, answer yes or no : ?(yes/no)");
@@ -389,7 +389,7 @@ public class Training {
 	 * cancellation
 	 * 
 	 */
-	private static void addTrainingToBucket() {
+	public static void addTrainingToBucket() {
 		String answer = "yes";
 
 		/* The main loop */
@@ -472,7 +472,7 @@ public class Training {
 	 * @param bucketI represent the selected training from training DB (I for ith
 	 *                select training)
 	 */
-	private static void showBucket(Map<Integer, List<String>> bucketI) {
+	public static void showBucket(Map<Integer, List<String>> bucketI) {
 		for (Entry<Integer, List<String>> entry : bucketI.entrySet()) {
 			System.out.print(ConsoleColors.BLUE_BOLD + "Product N°: " + entry.getKey() + " -> " + ConsoleColors.RESET);
 			System.out.print(ConsoleColors.GREEN + String.format("[%-60s]", entry.getValue().get(0) + ", "
