@@ -1,5 +1,4 @@
 package com.belkacem.m04;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,15 +34,13 @@ public class Training {
 		/* Start by filling our data structures */
 		insertDataInTrainingMap();
 		insertDataInFutureTrainingMap();
-
 		/* Welcome store app message + Training products display for the home page */
 		/*
 		 * A plugin (ANSI Escape in Console) is used to add some aesthetics (font,
 		 * color...) to the console display (ConsoleColors class is used
 		 */
-		System.out.println(ConsoleColors.BLACK_BOLD + "                     Hello and welcome to my FullTrainings app\n"
-				+ "           We will offer you a list of training courses currently available" + ConsoleColors.RESET);
-		displayAllTrainingList();
+		System.out.println(ConsoleColors.BLACK_BOLD + "          Hello and welcome to my FullTrainings app\n"
+				+ "We will offer you a list of training courses currently available" + ConsoleColors.RESET);
 
 		/*
 		 * On the home page, you have a menu to do some actions: add (buy), delete,
@@ -86,7 +83,6 @@ public class Training {
 	 * 
 	 */
 	public static void bucketSummary() {
-
 		System.out.print(ConsoleColors.RED_BOLD
 				+ "    |---------------------------------------  Your bucket summary  -----------------------------------------|\n");
 		/* Table header */
@@ -99,8 +95,8 @@ public class Training {
 				"\n-----------------------------------------------------------------------------------------------------------------"
 						+ ConsoleColors.RESET);
 
-		/*
-		 * * Total orice for each selected training and total price for the whole bucket
+		/**
+		 * Total price for each selected training and total price for the whole bucket
 		 */
 		Double productTotalPrice = 0.0;
 		Double TotalPrice = 0.0;
@@ -133,10 +129,7 @@ public class Training {
 			int answer = 0;
 			while (answer != 1 && answer != 2 && answer != 3) {
 				System.out.println("\nWhat do you want to do: ?(1/2,3)");
-				while (!scanner.hasNextInt()) {
-					scanner.next();
-					System.out.println("Sorry, your entry must be integer");
-				}
+				manageIntegeEntries();
 				answer = scanner.nextInt();
 			}
 			if (answer == 1 || answer == 2) {
@@ -153,7 +146,7 @@ public class Training {
 	 * This method allows us to have the initial training shop display. It also
 	 * offers a display of training courses available soon
 	 */
-	public static void displayAllTrainingList() {
+	public static void displayAllTrainingList(Map<Integer, List<String>> trainingToDisplay) {
 
 		// Build the table header
 		System.out.println(ConsoleColors.RED_BOLD
@@ -163,25 +156,11 @@ public class Training {
 				+ ConsoleColors.RESET);//
 
 		/* * Display the table body: Browse the training HashMap */
-		for (Entry<Integer, List<String>> map : trainings.entrySet()) {
+		for (Entry<Integer, List<String>> map : trainingToDisplay.entrySet()) {
 			System.out.println(String.format("|%-19s|%-9s|%-42s|%-10s|", map.getValue().get(0), map.getValue().get(1),
 					map.getValue().get(2), map.getValue().get(3)));
 			System.out.print("-------------------------------------------------------------------------------------\n");
 		}
-
-		/**
-		 * Training available soon
-		 */
-		System.out.println(ConsoleColors.CYAN_BOLD
-				+ "|                               Training available soon                             |\n"
-				+ "-------------------------------------------------------------------------------------");
-		for (Entry<Integer, List<String>> map : futurTrainings.entrySet()) {
-			System.out.println(ConsoleColors.CYAN + String.format("|%-19s|%-9s|%-42s|%-10s|", map.getValue().get(0),
-					map.getValue().get(1), map.getValue().get(2), map.getValue().get(3)));
-			System.out.print("-------------------------------------------------------------------------------------"
-					+ ConsoleColors.RESET + "\n");
-		}
-
 	}
 
 	/**
@@ -214,20 +193,22 @@ public class Training {
 	public static void storeMenu() {
 		int menuChoice = -1;
 		while (menuChoice != 0) { // (0) to exit menu
-			System.out.println(ConsoleColors.BLACK_BOLD + "--------------------- STORE MENU --------------------"
-					+ ConsoleColors.RESET + "\n" + "To view all the available trainings,        enter (1)\n"
-					+ "To add training to bucket,                  enter (2)\n"
-					+ "To show and validate your bucket,           enter (3)\n"
-					+ "To remove product from bucket,              enter (4)\n"
-					+ "To exit,                                    enter (0)\n"
-					+ "-----------------------------------------------------");
+			System.out.println(ConsoleColors.BLACK_BOLD
+					+ "-------------------------- STORE MENU --------------------------" + ConsoleColors.RESET + "\n"
+					+ "To view all the available trainings,                   enter (1)\n"
+					+ "To add training to bucket,                             enter (2)\n"
+					+ "To show and validate your bucket,                      enter (3)\n"
+					+ "To remove product from bucket,                         enter (4)\n"
+					+ "To view the future trainings,                          enter (5)\n"
+					+ "To exit,                                               enter (0)\n"
+					+ "----------------------------------------------------------------");
 
 			/** Only integer entries accepted */
 			manageIntegeEntries();
 			menuChoice = scanner.nextInt();
 			switch (menuChoice) {
 			case 1:
-				displayAllTrainingList();
+				displayAllTrainingList(trainings);
 				break;
 			case 2:
 				addTrainingToBucket();
@@ -237,6 +218,9 @@ public class Training {
 				break;
 			case 4:
 				removeTrainingFromBucket();
+				break;
+			case 5:
+				displayAllTrainingList(futurTrainings);
 				break;
 			case 0:
 				menuChoice = 0;
@@ -271,7 +255,6 @@ public class Training {
 			while (!answer.equalsIgnoreCase("no")) {
 				Integer productId = 0;
 				Integer quantity = 0;
-				showBucket(bucket);
 
 				/*
 				 * Check if product entry is correct (available) & Check if product entry is an
@@ -290,21 +273,19 @@ public class Training {
 					quantity = scanner.nextInt();
 				}
 
-				/* Start removing (deleting) */
+				/* Start removing (delete) */
 				if (!bucket.isEmpty()) {
 					if (quantity.toString().equals(bucket.get(productId).get(4))) { // remove the entire selected bucket
-																					// line order
+																					// (line order)
 						bucket.remove(productId);
-						showBucket(bucket);
 					} else { // remove the selected quantity from the selected bucket order line
 						Integer newQuantity = Integer.parseInt(bucket.get(productId).get(4)) - quantity;
 						bucket.get(productId).remove(4);
 						bucket.get(productId).add(newQuantity.toString());
 					}
-					if (bucket.isEmpty()) {
+					if (bucket.isEmpty())
 						answer = "no";// exit
-					} else {
-						showBucket(bucket);
+					else {
 						System.out.println("Do you want to remove another Product: ?(yes/no)");
 						answer = yesOrNoChoice(); // yes to continue adding, no to exit
 					}
@@ -361,7 +342,7 @@ public class Training {
 			quantity = scanner.nextInt();
 
 			// build list for bucket map
-			bucketList.addAll(trainings.get(productId));// copy the training list to bucket list (train
+			bucketList.addAll(trainings.get(productId));// copy the training list to bucket list
 			if (bucket.containsKey(productId)) {// add the same product -> quantity incremented
 				Integer newQuantity = quantity + Integer.parseInt(bucket.get(productId).get(4)); //
 				bucketList.add(newQuantity.toString());
@@ -370,15 +351,13 @@ public class Training {
 				bucketList.add(quantity.toString());
 				bucket.put(productId, bucketList);
 			}
-			showBucket(bucket);
 
 			// after each add
 			int switchChoice = 0;
 			while (switchChoice != 4) {
 				System.out.println(
 						"Do your choice: (1) add new product| (2) -> validate bucket| (3) -> Ajust bucket| (4) -> exit");
-				while (!scanner.hasNextInt())
-					scanner.next();
+				manageIntegeEntries();
 				switchChoice = scanner.nextInt();
 				switch (switchChoice) {
 				case 1:
@@ -395,7 +374,6 @@ public class Training {
 					break;
 				default:
 					System.out.println("Wrong choice!!!");
-					;
 				}
 			}
 		}
@@ -408,23 +386,5 @@ public class Training {
 			productId = scanner.nextInt();
 		}
 		return productId;
-	}
-
-	/**
-	 * Each time a training is added, the method displays the details of this
-	 * training as an order line
-	 * 
-	 * @param bucketI represent the selected training from training DB (I for ith
-	 *                select training)
-	 */
-	public static void showBucket(Map<Integer, List<String>> bucketI) {
-		for (Entry<Integer, List<String>> entry : bucketI.entrySet()) {
-			System.out.print(ConsoleColors.BLUE_BOLD + "Product N°: " + entry.getKey() + " -> "
-					+ String.format("[%-60s]",
-							entry.getValue().get(0) + ", " + entry.getValue().get(1) + ", " + entry.getValue().get(2)
-									+ ", " + entry.getValue().get(3))
-					+ String.format("[%-15s]", " Qunatity -> (" + entry.getValue().get(4) + ")" + ConsoleColors.RESET)
-					+ "\n");
-		}
 	}
 }
