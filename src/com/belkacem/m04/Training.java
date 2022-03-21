@@ -88,49 +88,43 @@ public class Training {
 	public static void bucketSummary() {
 
 		System.out.print(ConsoleColors.RED_BOLD
-				+ "    |---------------------------------------  Your bucket summary  -----------------------------------------|");
+				+ "    |---------------------------------------  Your bucket summary  -----------------------------------------|\n");
 		/* Table header */
-		System.out.println();
-		for (int i = 0; i < 112; i++)
-			System.out.print("-");
-		System.out.println(ConsoleColors.RESET);
+		System.out.println(
+				"-----------------------------------------------------------------------------------------------------------------"
+						+ ConsoleColors.RESET);
 		System.out.print(String.format(ConsoleColors.GREEN_BOLD + "|%-18s|%-10s|%-41s|%-10s|%-12s|%-15s|", "COURSE",
 				"DAYS/NB", "DESCRIPTION", "QUANTITY)", "UNIT PRICE", "TOTAL PRICE"));
-		System.out.println();
-		for (int i = 0; i < 112; i++)
-			System.out.print("-" + ConsoleColors.RESET);
-		System.out.println();
+		System.out.println(
+				"\n-----------------------------------------------------------------------------------------------------------------"
+						+ ConsoleColors.RESET);
 
 		/*
-		 * Total orice for each selected training and total price for the whole bucket
+		 * * Total orice for each selected training and total price for the whole bucket
 		 */
 		Double productTotalPrice = 0.0;
 		Double TotalPrice = 0.0;
 
 		/* Start to fill the table body with the selected training */
 		for (Map.Entry<Integer, List<String>> entry : bucket.entrySet()) {
-			productTotalPrice = Double.parseDouble(entry.getValue().get(3))
-					* Double.parseDouble(entry.getValue().get(4));
-			System.out.print(String.format("|%-18s|%-10s|%-41s|%-10s|%-12s|%-15s|", entry.getValue().get(0),
+			productTotalPrice = Double.parseDouble(entry.getValue().get(3)) 
+					* Double.parseDouble(entry.getValue().get(4)); //quantity*priceOftraining
+			System.out.println(String.format("|%-18s|%-10s|%-41s|%-10s|%-12s|%-15s|", entry.getValue().get(0),
 					entry.getValue().get(1), entry.getValue().get(2), entry.getValue().get(3), entry.getValue().get(4),
 					productTotalPrice + " €"));
-			System.out.println();
-			for (int i = 0; i < 112; i++)
-				System.out.print("-");
+			System.out.println(
+					"-----------------------------------------------------------------------------------------------------------------");
 			TotalPrice += productTotalPrice;
-			System.out.println();
 		}
 
 		/*
 		 * The last table line: a small choice menu and the total bucket price in EURO
 		 */
-		System.out.print(String.format(ConsoleColors.RED_BOLD + "|%-95s|%-15s|",
-				"Totals => => => To validate order (1) , (2) to cancel order or (3) to return back",
-				TotalPrice + " €"));
-		System.out.println();
-		for (int i = 0; i < 112; i++)
-			System.out.print("-");
-		System.out.println(ConsoleColors.RESET);
+		System.out.println(String.format(ConsoleColors.RED_BOLD + "|%-95s|%-15s|",
+				"Totals => => => |To validate order (1) |To cancel order (2) |To return back (3)", TotalPrice + " €"));
+		System.out.println(
+				"-----------------------------------------------------------------------------------------------------------------"
+						+ ConsoleColors.RESET);
 
 		/* Explore the given choice menu */
 		if (bucket.isEmpty()) {
@@ -147,6 +141,8 @@ public class Training {
 			}
 			if (answer == 1 || answer == 2) {
 				/* Empty the entire bucket */
+				System.out.println("Confirm your validation please: ?(yes/no)");
+				yesOrNoChoice();
 				bucket.clear();
 				System.out.println("Your bucket is cleared, thank you.");
 			}
@@ -158,74 +154,34 @@ public class Training {
 	 * offers a display of training courses available soon
 	 */
 	public static void displayAllTrainingList() {
-		/*
-		 * Define the table header elements (box sizes, box titles)
-		 */
-		// 1- Boxes sizes
-		String courseHeader = new String("COURSE             ");
-		String daysNumberHeader = new String("DAYS/NB  ");
-		String desciptionHeader = new String("DESCRIPTION                               ");
-		String priceHeader = new String("PRICE (€) ");
-		int[] headerColumnsSize = { courseHeader.length(), daysNumberHeader.length(), desciptionHeader.length(),
-				priceHeader.length() };
 
 		// Build the table header
-		int headerLength = courseHeader.length() + daysNumberHeader.length() + desciptionHeader.length()
-				+ priceHeader.length() + 5; // 5 is the number of the table columns + 1
-		System.out.print(ConsoleColors.RED_BOLD);
-		for (int i = 0; i < headerLength; i++)
-			System.out.print("-");
-		System.out.println();
-		System.out.println(
-				"|" + courseHeader + "|" + daysNumberHeader + "|" + desciptionHeader + "|" + priceHeader + "|");
-		for (int i = 0; i < headerLength; i++)
-			System.out.print("-");
-		System.out.print(ConsoleColors.RESET);//
-		System.out.println();
+		System.out.println(ConsoleColors.RED_BOLD
+				+ "-------------------------------------------------------------------------------------");
+		System.out.println("|COURSE             |DAYS/NB  |DESCRIPTION                               |PRICE (€) |");
+		System.out.println("-------------------------------------------------------------------------------------"
+				+ ConsoleColors.RESET);//
 
-		/*
-		 * Display the table body
-		 */
-		// Browse the training HashMap
+		/* * Display the table body: Browse the training HashMap */
 		for (Entry<Integer, List<String>> map : trainings.entrySet()) {
-			System.out.print("|");
-			// Browse HashMap Value
-			for (int i = 0; i < map.getValue().size(); i++) {
-				System.out.print(map.getValue().get(i));
-				for (int j = 0; j < headerColumnsSize[i] - map.getValue().get(i).length(); j++)
-					System.out.print(" "); // fill column ????
-				System.out.print("|"); // Draw next column border
-			}
-
-			System.out.println();
-			for (int i = 0; i < headerLength; i++)
-				System.out.print("-");// Draw next line
-			System.out.println();
+			System.out.println(String.format("|%-19s|%-9s|%-42s|%-10s|", map.getValue().get(0), map.getValue().get(1),
+					map.getValue().get(2), map.getValue().get(3)));
+			System.out.print("-------------------------------------------------------------------------------------\n");
 		}
 
 		/**
 		 * Training available soon
 		 */
-		System.out.print(ConsoleColors.CYAN_BOLD
-				+ "|                               Training available soon                             |\n");
-		for (int i = 0; i < headerLength; i++)
-			System.out.print("-");
-		System.out.println(ConsoleColors.RESET);
+		System.out.println(ConsoleColors.CYAN_BOLD
+				+ "|                               Training available soon                             |\n"
+				+ "-------------------------------------------------------------------------------------");
 		for (Entry<Integer, List<String>> map : futurTrainings.entrySet()) {
-			System.out.print(ConsoleColors.CYAN + "|");
-			// Browse HashMap Value
-			for (int i = 0; i < map.getValue().size(); i++) {
-				System.out.print(map.getValue().get(i));
-				for (int j = 0; j < headerColumnsSize[i] - map.getValue().get(i).length(); j++)
-					System.out.print(" "); // fill column ????
-				System.out.print("|"); // Draw next column border
-			}
-
-			System.out.println();
-			for (int i = 0; i < headerLength; i++)
-				System.out.print("-");// Draw next line
-			System.out.println(ConsoleColors.RESET);
+			System.out.println(ConsoleColors.CYAN + String.format("|%-19s|%-9s|%-42s|%-10s|", map.getValue().get(0),
+					map.getValue().get(1), map.getValue().get(2), map.getValue().get(3)));
+			System.out.print("-------------------------------------------------------------------------------------"
+					+ ConsoleColors.RESET + "\n");
 		}
+
 	}
 
 	/**
@@ -233,29 +189,26 @@ public class Training {
 	 * for the training display. it allows the user selecting training to buy
 	 */
 	public static void displayAllTrainingListV2() {
+
 		/* Start building the table header */
-		for (int i = 0; i < 120; i++)
-			System.out.print("-");
-		System.out.println();
-		System.out.print(ConsoleColors.RED_BOLD + String.format("|%-18s|%-10s|%-41s|%-10s|%-35s|", "COURSE", "DAYS/NB",
-				"DESCRIPTION", "PRICE (€)", "Buy traing?"));
-		System.out.println();
-		for (int i = 0; i < 120; i++)
-			System.out.print("-");
-		System.out.println(ConsoleColors.RESET);
+		System.out.print(ConsoleColors.RED_BOLD
+				+ "------------------------------------------------------------------------------------------------------------------------\n");
+		System.out.println(String.format("|%-18s|%-10s|%-41s|%-10s|%-35s|", "COURSE", "DAYS/NB", "DESCRIPTION",
+				"PRICE (€)", "Buy traing?"));
+		System.out.print(
+				"------------------------------------------------------------------------------------------------------------------------\n"
+						+ ConsoleColors.RESET);
 
 		/* Build the table body with the available training data structure */
 		for (Map.Entry<Integer, List<String>> entry : trainings.entrySet()) {
 			System.out.print(String.format("|%-18s|%-10s|%-41s|%-10s|", entry.getValue().get(0),
 					entry.getValue().get(1), entry.getValue().get(2), entry.getValue().get(3)));
 			/* A last column to allow user to select the training id for buying */
-			System.out.print(ConsoleColors.GREEN
+			System.out.println(ConsoleColors.GREEN
 					+ String.format("%-35s|", "To select this training, enter (" + entry.getKey() + ")")
 					+ ConsoleColors.RESET);
-			System.out.println();
-			for (int i = 0; i < 120; i++)
-				System.out.print("-");
-			System.out.println();
+			System.out.print(
+					"------------------------------------------------------------------------------------------------------------------------\n");
 		}
 	}
 
@@ -267,18 +220,15 @@ public class Training {
 		int menuChoice = -1;
 		while (menuChoice != 0) { // (0) to exit menu
 			System.out.println(ConsoleColors.BLACK_BOLD + "--------------------- STORE MENU --------------------"
-					+ ConsoleColors.RESET);
-			System.out.println("To view all the available trainings,        enter (1)");
-			System.out.println("To add training to bucket,                  enter (2)");
-			System.out.println("To show and validate your bucket,           enter (3)");
-			System.out.println("To remove product from bucket,              enter (4)");
-			System.out.println("To exit,                                    enter (0)");
-			System.out.println("-----------------------------------------------------");
+					+ ConsoleColors.RESET + "\n" + "To view all the available trainings,        enter (1)\n"
+					+ "To add training to bucket,                  enter (2)\n"
+					+ "To show and validate your bucket,           enter (3)\n"
+					+ "To remove product from bucket,              enter (4)\n"
+					+ "To exit,                                    enter (0)\n"
+					+ "-----------------------------------------------------");
+
 			/** Only integer entries accepted */
-			while (!scanner.hasNextInt()) {
-				System.out.println("Wrong entry, make a right choice (ONLY INTEGERS ENTRIES)!");
-				scanner.next();
-			}
+			manageIntegeEntries();
 			menuChoice = scanner.nextInt();
 			switch (menuChoice) {
 			case 1:
@@ -291,7 +241,6 @@ public class Training {
 				bucketSummary();
 				break;
 			case 4:
-
 				removeTrainingFromBucket();
 				break;
 			case 0:
@@ -300,6 +249,16 @@ public class Training {
 			default:
 				System.out.println("Wrong entry: ONLY INTEGERS ENTRIES ( 0 to 5)");
 			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private static void manageIntegeEntries() {
+		while (!scanner.hasNextInt()) {
+			System.out.println("Wrong entry, make a right choice (ONLY INTEGERS ENTRIES)!");
+			scanner.next();
 		}
 	}
 
@@ -325,10 +284,7 @@ public class Training {
 							"Select the product number you want to remove. Entry must be integer and correct ID !");
 
 					/* Check if product entry is an integer */
-					while (!scanner.hasNextInt()) {
-						scanner.next();
-						System.out.println("Wrong entry, enter only integers:");
-					}
+					manageIntegeEntries();
 					productId = scanner.nextInt();
 				}
 
@@ -338,10 +294,8 @@ public class Training {
 				 */
 				while (quantity > Integer.parseInt(bucket.get(productId).get(4)) || quantity < 1) {
 					System.out.println("Select the quantity of this product you want to remove !");
-					while (!scanner.hasNextInt()) {
-						scanner.next();
-						System.out.println("Wrong entry, enter only integers uentry out:");
-					}
+					/* Check if product quantity is an integer */
+					manageIntegeEntries();
 					quantity = scanner.nextInt();
 				}
 
@@ -408,20 +362,14 @@ public class Training {
 				System.out.println("Enter the  training's number please (intger only)");
 
 				/* Check if the entry (product id) is an integer */
-				while (!scanner.hasNextInt()) {
-					scanner.next();
-					System.out.println("Wrong entry, enter only integers:");
-				}
+				manageIntegeEntries();
 				productId = scanner.nextInt();
 			}
 
 			System.out.println("choose the quantity for this training: ? 1,2,3,..");
 
 			/** Check the entry (quantity) is an integer */
-			while (!scanner.hasNextInt()) {
-				scanner.next();
-				System.out.println("Wrong entry, enter only integers:");
-			}
+			manageIntegeEntries();
 			quantity = scanner.nextInt();
 
 			// build list for map
@@ -440,7 +388,7 @@ public class Training {
 			int switchChoice = 0;
 			while (switchChoice != 4) {
 				System.out.println(
-						"Do your choice: (1) -> add new product, (2) -> validate bucket, (3) -> Ajust bucket, (4) -> exit");
+						"Do your choice: (1) add new product| (2) -> validate bucket| (3) -> Ajust bucket| (4) -> exit");
 				while (!scanner.hasNextInt())
 					scanner.next();
 				switchChoice = scanner.nextInt();
@@ -474,11 +422,12 @@ public class Training {
 	 */
 	public static void showBucket(Map<Integer, List<String>> bucketI) {
 		for (Entry<Integer, List<String>> entry : bucketI.entrySet()) {
-			System.out.print(ConsoleColors.BLUE_BOLD + "Product N°: " + entry.getKey() + " -> " + ConsoleColors.RESET);
-			System.out.print(ConsoleColors.GREEN + String.format("[%-60s]", entry.getValue().get(0) + ", "
-					+ entry.getValue().get(1) + ", " + entry.getValue().get(2) + ", " + entry.getValue().get(3)));
-			System.out.println(
-					String.format("[%-15s]", " Qunatity -> (" + entry.getValue().get(4) + ")" + ConsoleColors.RESET));
+			System.out.print(ConsoleColors.BLUE_BOLD + "Product N°: " + entry.getKey() + " -> "
+					+ String.format("[%-60s]",
+							entry.getValue().get(0) + ", " + entry.getValue().get(1) + ", " + entry.getValue().get(2)
+									+ ", " + entry.getValue().get(3))
+					+ String.format("[%-15s]", " Qunatity -> (" + entry.getValue().get(4) + ")" + ConsoleColors.RESET)
+					+ "\n");
 		}
 	}
 }
