@@ -93,8 +93,8 @@ public class Training {
 		System.out.println(
 				"-----------------------------------------------------------------------------------------------------------------"
 						+ ConsoleColors.RESET);
-		System.out.print(String.format(ConsoleColors.GREEN_BOLD + "|%-18s|%-10s|%-41s|%-10s|%-12s|%-15s|", "COURSE",
-				"DAYS/NB", "DESCRIPTION", "QUANTITY)", "UNIT PRICE", "TOTAL PRICE"));
+		System.out.print(String.format(ConsoleColors.GREEN_BOLD + "|%-18s|%-10s|%-41s|%-12s|%-10s|%-15s|", "COURSE",
+				"DAYS/NB", "DESCRIPTION", "UNIT PRICE", "QUANTITY)", "TOTAL PRICE"));
 		System.out.println(
 				"\n-----------------------------------------------------------------------------------------------------------------"
 						+ ConsoleColors.RESET);
@@ -107,9 +107,9 @@ public class Training {
 
 		/* Start to fill the table body with the selected training */
 		for (Map.Entry<Integer, List<String>> entry : bucket.entrySet()) {
-			productTotalPrice = Double.parseDouble(entry.getValue().get(3)) 
-					* Double.parseDouble(entry.getValue().get(4)); //quantity*priceOftraining
-			System.out.println(String.format("|%-18s|%-10s|%-41s|%-10s|%-12s|%-15s|", entry.getValue().get(0),
+			productTotalPrice = Double.parseDouble(entry.getValue().get(3))
+					* Double.parseDouble(entry.getValue().get(4)); // quantity*priceOftraining
+			System.out.println(String.format("|%-18s|%-10s|%-41s|%-12s|%-10s|%-15s|", entry.getValue().get(0),
 					entry.getValue().get(1), entry.getValue().get(2), entry.getValue().get(3), entry.getValue().get(4),
 					productTotalPrice + " €"));
 			System.out.println(
@@ -120,8 +120,8 @@ public class Training {
 		/*
 		 * The last table line: a small choice menu and the total bucket price in EURO
 		 */
-		System.out.println(String.format(ConsoleColors.RED_BOLD + "|%-95s|%-15s|",
-				"Totals => => => |To validate order (1) |To cancel order (2) |To return back (3)", TotalPrice + " €"));
+		System.out.println(String.format("\n|%-95s|%-15s|",
+				"Totals:       |To validate order (1) |To cancel order (2) |To return back (3)|", TotalPrice + " €"));
 		System.out.println(
 				"-----------------------------------------------------------------------------------------------------------------"
 						+ ConsoleColors.RESET);
@@ -132,7 +132,7 @@ public class Training {
 		} else {
 			int answer = 0;
 			while (answer != 1 && answer != 2 && answer != 3) {
-				System.out.println("What do you want to do: ?(1/2,3)");
+				System.out.println("\nWhat do you want to do: ?(1/2,3)");
 				while (!scanner.hasNextInt()) {
 					scanner.next();
 					System.out.println("Sorry, your entry must be integer");
@@ -192,23 +192,18 @@ public class Training {
 
 		/* Start building the table header */
 		System.out.print(ConsoleColors.RED_BOLD
-				+ "------------------------------------------------------------------------------------------------------------------------\n");
-		System.out.println(String.format("|%-18s|%-10s|%-41s|%-10s|%-35s|", "COURSE", "DAYS/NB", "DESCRIPTION",
-				"PRICE (€)", "Buy traing?"));
-		System.out.print(
-				"------------------------------------------------------------------------------------------------------------------------\n"
-						+ ConsoleColors.RESET);
+				+ "------------------------------------------------------------------------------------------\n");
+		System.out.println(
+				String.format("|%-5s|%-18s|%-10s|%-41s|%-10s|", "ID", "COURSE", "DAYS/NB", "DESCRIPTION", "PRICE (€)"));
+		System.out.print("------------------------------------------------------------------------------------------\n"
+				+ ConsoleColors.RESET);
 
 		/* Build the table body with the available training data structure */
 		for (Map.Entry<Integer, List<String>> entry : trainings.entrySet()) {
-			System.out.print(String.format("|%-18s|%-10s|%-41s|%-10s|", entry.getValue().get(0),
+			System.out.println(String.format("|%-5s|%-18s|%-10s|%-41s|%-10s|", entry.getKey(), entry.getValue().get(0),
 					entry.getValue().get(1), entry.getValue().get(2), entry.getValue().get(3)));
-			/* A last column to allow user to select the training id for buying */
-			System.out.println(ConsoleColors.GREEN
-					+ String.format("%-35s|", "To select this training, enter (" + entry.getKey() + ")")
-					+ ConsoleColors.RESET);
 			System.out.print(
-					"------------------------------------------------------------------------------------------------------------------------\n");
+					"------------------------------------------------------------------------------------------\n");
 		}
 	}
 
@@ -278,15 +273,11 @@ public class Training {
 				Integer quantity = 0;
 				showBucket(bucket);
 
-				/* Check if product entry is correct (available) */
-				while (!bucket.containsKey(productId)) {
-					System.out.println(
-							"Select the product number you want to remove. Entry must be integer and correct ID !");
-
-					/* Check if product entry is an integer */
-					manageIntegeEntries();
-					productId = scanner.nextInt();
-				}
+				/*
+				 * Check if product entry is correct (available) & Check if product entry is an
+				 * integer
+				 */
+				productId = manageTrainingIdEntries(productId);
 
 				/**
 				 * Check if quantity entry is less than or equal to the correct quantity
@@ -357,14 +348,11 @@ public class Training {
 			/* Display training products to user for each add */
 			displayAllTrainingListV2();
 
-			/* Check if the selected id exists */
-			while (!trainings.containsKey(productId)) {
-				System.out.println("Enter the  training's number please (intger only)");
-
-				/* Check if the entry (product id) is an integer */
-				manageIntegeEntries();
-				productId = scanner.nextInt();
-			}
+			/*
+			 * Check if the selected id exists & Check if the entry (product id) is an
+			 * integer
+			 */
+			productId = manageTrainingIdEntries(productId);
 
 			System.out.println("choose the quantity for this training: ? 1,2,3,..");
 
@@ -372,7 +360,7 @@ public class Training {
 			manageIntegeEntries();
 			quantity = scanner.nextInt();
 
-			// build list for map
+			// build list for bucket map
 			bucketList.addAll(trainings.get(productId));// copy the training list to bucket list (train
 			if (bucket.containsKey(productId)) {// add the same product -> quantity incremented
 				Integer newQuantity = quantity + Integer.parseInt(bucket.get(productId).get(4)); //
@@ -411,6 +399,15 @@ public class Training {
 				}
 			}
 		}
+	}
+
+	private static Integer manageTrainingIdEntries(Integer productId) {
+		while (!trainings.containsKey(productId)) {
+			System.out.println("Enter the  training's ID please (intger only)");
+			manageIntegeEntries();
+			productId = scanner.nextInt();
+		}
+		return productId;
 	}
 
 	/**
